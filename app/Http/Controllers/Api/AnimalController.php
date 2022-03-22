@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use App\Models\Cage;
 use App\Models\Animal;
 
 class AnimalController extends Controller
@@ -16,7 +17,7 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        $animal = Animal::all();
+        $animal = Animal::with('cage')->get();
 
         return response()->json([
             'code' => 200,
@@ -45,6 +46,7 @@ class AnimalController extends Controller
     public function store(Request $request)
     {
         $animal = Animal::create([
+            'cage_id' => $request->cage_id,
             'nama' => $request->nama,
             'umur' => $request->umur
 
@@ -66,6 +68,7 @@ class AnimalController extends Controller
      */
     public function show(Animal $animal)
     {
+        $animal = Animal::where('id', $animal->id)->with('cage')->first();
         return response()->json([
             'code' => 200,
             'status' => true,
@@ -95,6 +98,7 @@ class AnimalController extends Controller
     public function update(Request $request, Animal $animal)
     {
         $animal->update([
+            'cage_id' => $request->cage_id,
             'nama' => $request->nama,
             'umur' => $request->umur
         ]);

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Models\Cage;
+use App\Models\Animal;
 
 class CageController extends Controller
 {
@@ -16,7 +17,7 @@ class CageController extends Controller
      */
     public function index()
     {
-        $cage = Cage::all();
+        $cages = Cage::with('animals')->get();
 
         return response()->json([
             'code' => 200,
@@ -66,6 +67,7 @@ class CageController extends Controller
      */
     public function show(Cage $cage)
     {
+        $cage = Cage::where('id', $cage->id)->with('animals')->first();
         return response()->json([
             'code' => 200,
             'status' => true,

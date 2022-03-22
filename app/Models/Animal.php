@@ -10,9 +10,15 @@ class Animal extends Model
     use HasFactory;
 
     protected $fillable =[
+        'cage_id',
         'nama',
-        'umur'
+        'umur',
+        'description'
 
 
     ];
+    public function cage()
+    {
+        return $this->hasOne(Cage::class, 'id', 'cage_id');
+    }
 }
